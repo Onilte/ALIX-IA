@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Comunidade · NyScripts_Sources</title>
+<meta name="description" content="Discord oficial do NyScripts_Sources: novidades, changelog, suporte por ticket e regras.">
+<meta name="theme-color" content="#06070a">
+<meta name="color-scheme" content="dark">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%235b8cff'/%3E%3Cstop offset='1' stop-color='%2322d3ee'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='32' height='32' rx='8' fill='url(%23g)'/%3E%3Ctext x='16' y='22' font-family='monospace' font-size='17' font-weight='bold' text-anchor='middle' fill='%2304070f'%3EN%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+<header id="site-header"></header>
+
+<main>
+  <section class="section">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">Junte-se</span>
+        <h2>Comunidade</h2>
+        <p>O Discord é onde saem as novidades, o suporte e o changelog dos plugins e scripts.</p>
+      </div>
+
+      <div class="panel reveal" style="margin-bottom:22px">
+        <div class="panel-left">
+          <div class="panel-icon" id="discord-icon" style="color:#5865f2"></div>
+          <div>
+            <h3>Entre no Discord</h3>
+            <p>Comunidade oficial do NyScripts_Sources — atualizações, dúvidas e conversa direta com quem desenvolve.</p>
+          </div>
+        </div>
+        <a class="btn btn-discord" id="discord-link" target="_blank" rel="noopener">Abrir Discord</a>
+      </div>
+
+      <div class="grid grid-3" id="community-cards"></div>
+    </div>
+  </section>
+</main>
+
+<footer id="site-footer"></footer>
+
+<script src="config.js"></script>
+<script src="assets/js/app.js"></script>
+<script src="assets/js/auth.js"></script>
+<script>
+  Ny.boot('comunidade');
+
+  Ny.el('discord-icon').innerHTML = Ny.ICON.discord;
+  var link = Ny.el('discord-link');
+  link.href = Ny.safeUrl(Ny.config.discordInvite);
+  link.innerHTML = Ny.ICON.discord + 'Abrir Discord';
+
+  var CARDS = [
+    { icon: 'ticket', title: 'Suporte / Tickets', desc: 'Como pedir ajuda e abrir um ticket no servidor.', href: 'suporte.html' },
+    { icon: 'shield', title: 'Regras',            desc: 'Regras gerais, de leaks e mapas, tickets, parceria e bot.', href: 'regras.html' },
+    { icon: 'star',   title: 'Créditos',          desc: 'Quem fez o site e o servidor.', href: 'creditos.html' }
+  ];
+
+  Ny.el('community-cards').innerHTML = CARDS.map(function (c, i) {
+    return '<a class="card reveal" data-delay="' + i + '" href="' + c.href + '">' +
+      '<div class="card-icon">' + Ny.ICON[c.icon] + '</div>' +
+      '<h3>' + c.title + '</h3>' +
+      '<p>' + c.desc + '</p>' +
+      '<span class="card-link">Abrir' + Ny.ICON.arrow + '</span>' +
+    '</a>';
+  }).join('');
+
+  Ny.reveal();
+</script>
+</body>
+</html>

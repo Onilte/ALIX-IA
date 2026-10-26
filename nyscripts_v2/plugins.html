@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Documentação · Anix</title>
+  <meta name="description" content="Documentação do Anix, visão geral do sistema, uso e objetivos da plataforma." />
+  <meta name="theme-color" content="#05070b" />
+  <meta name="color-scheme" content="dark" />
+  <link rel="icon" type="image/png" href="assets/images/anix-logo.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet" />
+  <style>
+    :root { --bg:#05070b; --bg-2:#0b1118; --line:rgba(255,255,255,.08); --text:#edf3ff; --muted:#abbbd3; --brand:#9fe7ff; --brand-2:#7ca5ff; --max:1220px; }
+    *{box-sizing:border-box} html{scroll-behavior:smooth} body{margin:0;min-height:100vh;background:radial-gradient(circle at 10% 12%, rgba(124,165,255,.14), transparent 20%), radial-gradient(circle at 82% 0%, rgba(159,231,255,.1), transparent 26%), var(--bg); color:var(--text); font-family:Inter, 'Segoe UI', sans-serif; line-height:1.6; overflow-x:hidden;}
+    body::before{content:""; position:fixed; inset:0; background-image:linear-gradient(rgba(255,255,255,.045) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.045) 1px, transparent 1px); background-size:54px 54px; mask-image:radial-gradient(circle at 50% 30%, rgba(0,0,0,.85), transparent 82%); pointer-events:none; z-index:0;}
+    body::after{content:""; position:fixed; inset:0; background-image:radial-gradient(circle, rgba(255,255,255,.7) 1px, transparent 1.4px); background-size:18px 18px; opacity:0.18; animation:drift 18s linear infinite alternate; pointer-events:none; z-index:0;} @keyframes drift{0%{transform:translateY(0)}100%{transform:translateY(18px)}}
+    a{text-decoration:none;color:inherit} .site-header{position:sticky;top:0;z-index:30;backdrop-filter:blur(20px);background:rgba(5,7,11,.72);border-bottom:1px solid rgba(255,255,255,.06)} .header-inner{width:min(var(--max), calc(100% - 36px));margin:0 auto;min-height:76px;display:flex;align-items:center;justify-content:space-between;gap:18px}
+    .brand{display:inline-flex;align-items:center;gap:12px;font-family:'Space Grotesk',sans-serif;font-weight:700;letter-spacing:-.05em}.brand-mark{width:32px;height:32px;border-radius:10px;display:grid;place-items:center;background:linear-gradient(135deg, var(--brand) 0%, var(--brand-2) 100%);color:#071019;font-size:.8rem;font-weight:800}.brand-text{font-size:1.12rem}.brand-text span{color:var(--muted);font-weight:500}.nav{display:flex;align-items:center;gap:8px;margin-left:auto}.nav-link{color:var(--muted);padding:9px 12px;border-radius:999px;transition:.2s ease;font-size:.9rem}.nav-link:hover,.nav-link.is-active{background:rgba(255,255,255,.04);color:var(--text)}
+    .page-shell{width:min(var(--max), calc(100% - 36px)); margin:0 auto; position:relative; z-index:1; padding-bottom:80px}.section-head{margin-top:74px;margin-bottom:18px}.eyebrow{display:inline-flex;align-items:center;gap:8px;background:rgba(159,231,255,.08);border:1px solid rgba(159,231,255,.18);color:var(--brand);font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;font-weight:700;padding:8px 12px;border-radius:999px}.section-head h2{margin:10px 0 0;font-family:'Space Grotesk',sans-serif;font-size:clamp(2.2rem, 3vw, 3rem);letter-spacing:-.06em}.section-head p{margin-top:12px;color:var(--muted);max-width:750px}.doc-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}.doc-card{background:rgba(255,255,255,.02);border:1px solid var(--line);border-radius:22px;padding:22px 20px}.doc-card h3{margin:0 0 8px;font-size:1.2rem}.doc-card p,.doc-card li{color:var(--muted)}.doc-card ul{margin:10px 0 0;padding-left:18px}.@media (max-width:980px){.nav{display:none}.doc-grid{grid-template-columns:1fr}} @media (max-width:640px){.page-shell{width:min(var(--max), calc(100% - 24px))}.header-inner{width:min(var(--max), calc(100% - 24px))}} 
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="index.html" aria-label="Anix começo">
+        <img src="assets/images/anix-logo.png" alt="" style="width:32px;height:32px;object-fit:contain;border-radius:10px" />
+        <span class="brand-text">Anix<span> // IA</span></span>
+      </a>
+      <nav class="nav" aria-label="Menu do site">
+        <a class="nav-link" href="index.html">Início</a>
+        <a class="nav-link is-active" href="plugins.html">Documentação</a>
+        <a class="nav-link" href="scripts.html">Scripts</a>
+        <a class="nav-link" href="chat.html">Anix Chat</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="page-shell">
+    <section class="section-head">
+      <span class="eyebrow">Documentação</span>
+      <h2>Sobre o site e a IA Anix</h2>
+      <p>
+        O objetivo central da plataforma é reunir criação de scripts, documentação, leitura de arquivos grandes,
+        explicação de lógica e produção de soluções práticas em um único ambiente de desenvolvimento inteligente.
+      </p>
+    </section>
+
+    <div class="doc-grid">
+      <article class="doc-card">
+        <h3>O que usamos</h3>
+        <ul>
+          <li>HTML e CSS para a interface visual.</li>
+          <li>JavaScript para navegação e interações.</li>
+          <li>Estrutura de páginas para organização do produto.</li>
+          <li>Arquivos e documentação para dar contexto real à IA.</li>
+        </ul>
+      </article>
+
+      <article class="doc-card">
+        <h3>Objetivo principal</h3>
+        <p>
+          Transformar material técnico em respostas úteis: explicar projeto, criar scripts, corrigir rotinas,
+          ler arquivos grandes e adaptar soluções ao contexto correto.
+        </p>
+      </article>
+
+      <article class="doc-card">
+        <h3>Sobre o source-main</h3>
+        <p>
+          O sistema reconhece que a estrutura de scripts e bibliotecas do source-main é rica e variada. Ele pode ler
+          esse material e responder com mais contexto, sobretudo para tarefas em Lua/Luau e automação.
+        </p>
+      </article>
+
+      <article class="doc-card">
+        <h3>Licença e uso</h3>
+        <p>
+          O site foi pensado como ambiente de documentação, organização e auxílio técnico. Seu uso depende da finalidade,
+          do contexto e das regras aplicáveis ao ambiente em que ele será implantado.
+        </p>
+      </article>
+    </div>
+
+    <section class="section-head">
+      <span class="eyebrow">Contexto</span>
+      <h2>O Anix entende o código antes de responder</h2>
+    </section>
+
+    <div class="doc-grid">
+      <article class="doc-card">
+        <h3>Leitura de arquivos</h3>
+        <p>Analisa scripts, documentação, textos e arquivos de contexto para deduzir padrão de lógica e estrutura.</p>
+      </article>
+      <article class="doc-card">
+        <h3>Organização de materiais</h3>
+        <p>Divide o conhecimento em blocos claros: explicação, script, correções, referências e contexto de uso.</p>
+      </article>
+      <article class="doc-card">
+        <h3>Geração de resposta</h3>
+        <p>Cria solução com base no pedido, levando em conta ainda o que está no projeto e no ambiente em uso.</p>
+      </article>
+      <article class="doc-card">
+        <h3>Exemplo de uso</h3>
+        <p>"Faça um script Lua usando a lib do Obsidian" — a IA detecta os padrões, lê os materiais e produz a solução correta.</p>
+      </article>
+    </div>
+  </main>
+</body>
+</html>

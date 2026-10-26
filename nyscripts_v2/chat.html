@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#080a0e" />
+  <meta name="color-scheme" content="dark" />
+  <title>Anix — Converse com a IA</title>
+  <meta name="description" content="Converse com Anix para criar, entender e corrigir código." />
+  <link rel="icon" type="image/png" href="assets/images/anix-logo.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root{color-scheme:dark;--bg:#080a0e;--side:#111318;--panel:#1a1b1e;--panel-hover:#25262a;--text:#f1f0ee;--muted:#aaa9a6;--line:#292a2e;--accent:#b9d5ff;--danger:#ff9a9a}
+    *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:15px/1.6 Inter,system-ui,sans-serif}button,input,textarea{font:inherit;color:inherit}button{cursor:pointer}a{color:inherit;text-decoration:none}
+    .app{min-height:100vh;display:grid;grid-template-columns:280px minmax(0,1fr)}
+    .sidebar{height:100vh;position:sticky;top:0;background:var(--side);border-right:1px solid var(--line);display:flex;flex-direction:column;padding:18px 14px}
+    .brand{display:flex;align-items:center;gap:11px;padding:4px 8px 22px;font:700 19px 'Space Grotesk',sans-serif;letter-spacing:-.04em}
+    .brand img{width:34px;height:34px;object-fit:contain;border-radius:10px}
+    .side-actions{display:grid;gap:8px}
+    .side-button,.history-item{display:flex;align-items:center;gap:11px;width:100%;padding:10px 11px;border:1px solid transparent;border-radius:11px;background:transparent;text-align:left;color:#d7d6d3}
+    .side-button:hover,.history-item:hover{background:var(--panel-hover)}.side-button.new{background:#25262a;border-color:#35363a}
+    .icon{width:18px;height:18px;flex:0 0 18px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+    .history-heading{display:flex;justify-content:space-between;align-items:center;margin:28px 7px 10px;color:var(--muted);font-size:12px;font-weight:600}
+    .history-list{display:grid;gap:4px;overflow:auto}.history-item{font-size:13px;color:#c5c4c1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.history-item.active{background:#25262a;color:var(--text)}
+    .side-bottom{margin-top:auto;color:#858480;font-size:12px;padding:14px 8px 2px}
+    .main{min-width:0;display:flex;flex-direction:column;min-height:100vh}
+    .topbar{height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 24px;border-bottom:1px solid rgba(255,255,255,.04)}
+    .top-title{font:600 15px 'Space Grotesk',sans-serif}.top-right{display:flex;align-items:center;gap:12px;color:var(--muted);font-size:12px}
+    .provider-dot{width:8px;height:8px;border-radius:50%;background:#8bd7a1;box-shadow:0 0 12px #8bd7a1}
+    .conversation{width:min(820px,calc(100% - 36px));margin:0 auto;padding:36px 0 24px;flex:1;display:flex;flex-direction:column;gap:24px}
+    .welcome-state{margin:auto;text-align:center;max-width:640px;padding:24px 0}
+    .welcome-state[hidden],.messages[hidden]{display:none}
+    .welcome-state img{width:76px;height:76px;object-fit:contain;margin:0 auto 22px;filter:drop-shadow(0 8px 28px rgba(139,199,255,.25))}
+    .welcome-state h1{font:600 clamp(30px,5vw,43px)/1.12 'Space Grotesk',sans-serif;letter-spacing:-.06em;margin:0 0 12px}
+    .welcome-state p{color:var(--muted);margin:0 auto;max-width:500px}
+    .messages{display:grid;gap:28px}
+    .message{display:grid;grid-template-columns:34px minmax(0,1fr);gap:14px;align-items:start}
+    .message-avatar{width:32px;height:32px;border:1px solid var(--line);border-radius:10px;display:grid;place-items:center;background:#202126;font-weight:600;font-size:12px}
+    .message-avatar img{width:25px;height:25px;object-fit:contain}
+    .message-content{min-width:0;padding-top:3px}.message-content>strong{display:block;font-size:13px;margin-bottom:7px}
+    .message-text{color:#e7e6e3;overflow-wrap:anywhere}.message-text code{font:13px 'JetBrains Mono',monospace;background:#24252a;padding:2px 5px;border-radius:5px}
+    .code-output{overflow:auto;margin:12px 0;padding:14px 16px;border:1px solid var(--line);border-radius:12px;background:#111318;color:#d8e5ff;white-space:pre-wrap}
+    .composer-area{position:sticky;bottom:0;background:linear-gradient(transparent,var(--bg) 20%);padding:16px 18px 22px}
+    .composer-wrap{width:min(820px,100%);margin:0 auto}
+    .file-list{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 8px}
+    .file-chip{display:flex;align-items:center;gap:8px;border:1px solid var(--line);background:#17191e;border-radius:10px;padding:6px 9px;color:var(--muted);font-size:12px}
+    .file-chip button{border:0;background:none;color:var(--muted);font-size:17px;padding:0 2px}
+    .composer{border:1px solid #45464a;background:#202124;border-radius:20px;padding:12px 14px 10px;box-shadow:0 10px 40px rgba(0,0,0,.24)}
+    .composer:focus-within{border-color:#686a70}
+    .prompt{display:block;width:100%;min-height:76px;max-height:240px;resize:vertical;border:0;outline:0;background:transparent;padding:2px 2px 12px;line-height:1.55}
+    .prompt::placeholder{color:#92918e}
+    .composer-toolbar{display:flex;align-items:center;justify-content:space-between;gap:10px}
+    .toolbar-left{display:flex;align-items:center;gap:8px}
+    .tool-button{display:inline-flex;align-items:center;justify-content:center;gap:7px;border:1px solid transparent;background:transparent;border-radius:10px;padding:7px 9px;color:#c8c7c4;font-size:12px}
+    .tool-button:hover{background:#2c2d31}.tool-button .icon{width:17px;height:17px}
+    .send-button{width:36px;height:36px;border:0;border-radius:11px;background:#e9e8e5;color:#17181b;display:grid;place-items:center}
+    .send-button:disabled{opacity:.45;cursor:wait}.send-button .icon{width:18px;height:18px}
+    .composer-note{text-align:center;color:#777672;font-size:11px;padding-top:9px}
+    .status{min-height:20px;color:var(--muted);font-size:12px;padding:0 3px 5px}.status.is-error{color:var(--danger)}
+    @media(max-width:780px){.app{grid-template-columns:1fr}.sidebar{height:auto;position:relative;padding:10px 14px;border-right:0;border-bottom:1px solid var(--line)}.brand{padding-bottom:10px}.side-actions{grid-template-columns:1fr 1fr}.history-heading,.history-list,.side-bottom{display:none}.main{min-height:calc(100vh - 62px)}.topbar{height:52px;padding:0 16px}.conversation{padding-top:22px}.composer-area{padding:12px 12px 18px}}
+    @media(max-width:440px){.side-actions .side-button:not(.new){display:none}.conversation{width:calc(100% - 24px)}.composer-toolbar{align-items:center}.tool-button{padding:7px}.top-right .limit{display:none}}
+  </style>
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar" aria-label="Navegação e histórico">
+      <a class="brand" href="index.html"><img src="assets/images/anix-logo.png" alt="" />Anix</a>
+      <div class="side-actions">
+        <button class="side-button new" id="new-chat-button" type="button">
+          <svg class="icon" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>Nova conversa
+        </button>
+        <a class="side-button" href="index.html">
+          <svg class="icon" viewBox="0 0 24 24"><path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-6v-7h-4v7H4a1 1 0 0 1-1-1z"/></svg>Início
+        </a>
+      </div>
+      <div class="history-heading"><span>Conversas recentes</span><span id="file-count">0/10 arquivos</span></div>
+      <nav class="history-list" id="history-list" aria-label="Histórico de conversas"></nav>
+      <div class="side-bottom">Anix usa a API Qwen configurada no servidor.</div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div class="top-title">Anix</div>
+        <div class="top-right"><span class="provider-dot" aria-hidden="true"></span><span>Qwen</span><span class="limit">· até 10 arquivos de texto por envio</span></div>
+      </header>
+
+      <section class="conversation" aria-live="polite">
+        <div class="welcome-state" id="welcome-state">
+          <img src="assets/images/anix-logo.png" alt="Logo Anix" />
+          <h1>O que vamos criar hoje?</h1>
+          <p>Converse com Anix para criar, entender ou corrigir código. Você pode anexar arquivos de texto e código para dar contexto.</p>
+        </div>
+        <div class="messages" id="message-list"></div>
+      </section>
+
+      <footer class="composer-area">
+        <div class="composer-wrap">
+          <div class="status" id="chat-status" role="status">Digite uma mensagem para começar.</div>
+          <div class="file-list" id="file-list"></div>
+          <form class="composer" id="chat-form">
+            <textarea class="prompt" id="message-input" aria-label="Mensagem para Anix" placeholder="Converse com Anix..." autocomplete="off"></textarea>
+            <div class="composer-toolbar">
+              <div class="toolbar-left">
+                <label class="tool-button" for="file-input" title="Anexar arquivos de texto ou código">
+                  <svg class="icon" viewBox="0 0 24 24"><path d="m20.5 11.5-8.8 8.8a6 6 0 0 1-8.5-8.5l9.2-9.2a4 4 0 0 1 5.7 5.7l-9.2 9.2a2 2 0 0 1-2.8-2.8l8.5-8.5"/></svg>
+                  Anexar
+                </label>
+                <input id="file-input" type="file" multiple accept=".lua,.luau,.txt,.md,.json,.csv,.js,.ts,.html,.css,.py,.xml,text/*" hidden />
+                <span class="tool-button" title="Limite: até 10 arquivos, 10 MB somados por envio">10 arquivos · até 10 MB no total</span>
+              </div>
+              <button class="send-button" id="send-button" type="submit" aria-label="Enviar mensagem">
+                <svg class="icon" viewBox="0 0 24 24"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+              </button>
+            </div>
+          </form>
+          <div class="composer-note">Confira as respostas antes de usar código em um projeto.</div>
+        </div>
+      </footer>
+    </main>
+  </div>
+  <script src="assets/js/chat.js"></script>
+</body>
+</html>
